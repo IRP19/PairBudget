@@ -1,5 +1,15 @@
 # PairBudget
 
+## Uso previsto y limitaciones
+
+PairBudget está pensado para uso local, en un equipo propio o dentro de una red doméstica de confianza.
+
+- **Sin HTTPS:** la configuración incluida de Nginx utiliza HTTP y no configura TLS.
+- **Sin autenticación de usuarios:** la aplicación no implementa un inicio de sesión ni comprueba la identidad de quien realiza las peticiones. Cualquier persona que pueda acceder a la aplicación puede consultar y modificar los datos mediante la interfaz o la API.
+- **No exponer directamente a Internet:** no publiques el servicio en Internet tal como está. Para un acceso remoto sería necesario implementar y verificar medidas de seguridad adicionales, como autenticación, HTTPS y controles de acceso adecuados.
+
+La contraseña de PostgreSQL y los permisos limitados del usuario de la API protegen el acceso a la base de datos, pero no sustituyen la autenticación de los usuarios de la aplicación.
+
 PairBudget es una app web para gestionar ingresos y gastos de pareja con cuentas individuales y una cuenta común.
 
 ## Arquitectura
