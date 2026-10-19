@@ -1,0 +1,12 @@
+.git
+.gitignore
+.dockerignore
+Dockerfile
+compose.yml
+Backup/
+*.xlsx
+.env
+.env.*
+!.env.example
+api/node_modules
+.env.*

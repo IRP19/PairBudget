@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7f9" />
+    <title>PairBudget · Finanzas compartidas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegación principal">
+        <a class="brand" href="#resumen" aria-label="PairBudget, inicio">
+          <span class="brand-icon" aria-hidden="true">⌂</span>
+          <span><strong>PairBudget</strong><small>finanzas compartidas</small></span>
+        </a>
+        <nav class="nav-list account-options sidebar-accounts" aria-label="Seleccionar cuenta">
+          <button type="button" class="account-option" data-owner-filter="persona-a" aria-pressed="true"><span class="account-dot persona-a"></span>Persona A</button>
+          <button type="button" class="account-option" data-owner-filter="persona-b" aria-pressed="false"><span class="account-dot persona-b"></span>Persona B</button>
+          <button type="button" class="account-option" data-owner-filter="comun" aria-pressed="false"><span class="account-dot comun"></span>Común</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="privacy-note"><span class="privacy-dot"></span><span>Datos financieros en PostgreSQL</span></div>
+        </div>
+      </aside>
+
+      <main id="resumen" class="main-content">
+        <header class="topbar">
+          <div><p class="eyebrow" id="todayLabel">TU ESPACIO, AL DÍA</p><h1 id="pageTitle" aria-live="polite"></h1><p class="subtitle">Pequeños pasos para que todo esté en su sitio.</p></div>
+          <div class="top-actions">
+            <div class="month-control" role="group" aria-label="Periodo consultado">
+              <label for="yearPicker"><span>Año</span><select id="yearPicker" aria-label="Seleccionar año"></select></label>
+              <label for="monthPicker"><span>Mes</span><select id="monthPicker" aria-label="Seleccionar mes"></select></label>
+            </div>
+            <button class="button button-soft export-button" id="exportDataButton" type="button"><span aria-hidden="true">↓</span> Exportar CSV</button>
+            <button class="button button-primary" type="button" data-open-modal="expense"><span aria-hidden="true">＋</span> Nuevo gasto</button>
+          </div>
+        </header>
+
+        <section class="home-summary" aria-label="Resumen del mes">
+          <div class="metric-grid home-summary-grid" aria-label="Resumen del mes">
+          <article class="metric-card metric-spend"><div class="metric-heading"><span>Gastos del mes</span><span class="metric-icon">€</span></div><strong id="metricMonthly">0 €</strong><small id="metricExpenseNote">0 movimientos</small></article>
+          <article class="metric-card savings-card" id="monthlySavingsCard"><div class="metric-heading"><span>Ahorro del mes</span><span class="metric-icon savings-icon" id="monthlySavingsIcon">↗</span></div><strong id="metricMonthlySavings">0 €</strong><small id="monthlySavingsStatus">Presupuesto justo</small></article>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel expense-panel" id="gastos">
+            <div class="panel-heading"><div><p class="eyebrow">TUS NÚMEROS</p><h2>Gastos por categoría</h2><p class="panel-subtitle" id="expenseCaption"></p></div><button class="button button-soft" type="button" data-open-modal="expense">＋ Añadir</button></div>
+            <div id="expenseChart" class="category-chart" aria-label="Gastos agrupados por categoría"></div>
+          </article>
+
+          <article class="panel income-panel" id="ingresos">
+            <div class="panel-heading"><div><p class="eyebrow">ENTRADAS DEL HOGAR</p><h2>Ingresos del mes</h2><p class="panel-subtitle" id="incomeCaption"></p></div><button class="button button-soft" type="button" data-open-modal="income">＋ Añadir ingreso</button></div>
+            <div id="incomeList" class="record-list"></div>
+          </article>
+
+        </section>
+
+        <section class="panel movements-panel" id="movimientos">
+          <div class="panel-heading list-heading"><div><h2>Movimientos</h2><p class="panel-subtitle">Filtra por cuenta o edita cualquier apunte.</p></div><label class="filter-control"><span class="sr-only">Filtrar gastos por cuenta</span><select id="ownerFilter"><option value="persona-a">Persona A</option><option value="persona-b">Persona B</option><option value="comun">Común</option></select></label></div>
+          <div id="expenseList" class="record-list"></div>
+        </section>
+
+        <section class="annual-summary" aria-label="Balance acumulado del año">
+          <div class="annual-heading"><div><p class="eyebrow">VISTA DEL AÑO</p><h2>Acumulado hasta <span id="annualThrough">octubre de 2026</span></h2></div><span class="annual-owner" id="annualOwner">Persona A</span></div>
+          <div class="annual-metrics">
+            <article class="annual-metric"><span>Gasto real acumulado</span><strong id="annualExpenses">0 €</strong><small>Sin transferencias internas</small></article>
+            <article class="annual-metric annual-balance" id="annualBalanceCard"><span id="annualBalanceLabel">Ahorro neto acumulado</span><strong id="annualBalance">0 €</strong><small id="annualBalanceStatus">Presupuesto justo</small></article>
+            <article class="annual-metric"><span>Periodo contabilizado</span><strong id="annualMonthCount">0 meses</strong><small>Desde enero hasta el mes elegido</small></article>
+          </div>
+          <p class="annual-note">El saldo suma ingresos y gastos de las cuentas hasta el mes elegido. En la vista de toda la casa, las aportaciones a Común se compensan entre cuentas y no cuentan como gasto real.</p>
+        </section>
+
+        <footer class="page-footer"><span class="footer-home">⌂</span><span>Tu hogar, a tu ritmo.</span><span class="footer-storage">Ingresos y gastos en PostgreSQL.</span></footer>
+      </main>
+    </div>
+
+    <dialog class="modal" id="itemModal" aria-labelledby="modalTitle">
+      <form class="modal-card" id="itemForm">
+        <div class="modal-head"><div><p class="eyebrow" id="modalEyebrow">NUEVO APUNTE</p><h2 id="modalTitle">Añadir elemento</h2></div><button class="modal-close" id="closeModalButton" type="button" aria-label="Cerrar">×</button></div>
+        <div id="formFields" class="form-grid"></div>
+        <div class="modal-actions"><button class="button button-soft" id="cancelModalButton" type="button">Cancelar</button><button class="button button-primary" type="submit">Guardar</button></div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="household-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

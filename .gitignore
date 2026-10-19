@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+node_modules/
+api/node_modules/
+Excel de cuentas.xlsx
+*.xlsx
+Backup/
+*.dump
+*.tmp
+household-data.js
